@@ -1,4 +1,20 @@
 return {
+    {
+      "ray-x/lsp_signature.nvim",
+      event = "VeryLazy",
+      opts = {
+          bind = true,
+          handler_opts = {
+              border = "none"
+          },
+          wraps = true,
+          fix_pos = true,
+          hint_enable = false,
+          always_trigger = true,
+          floating_window_above_cur_line = false
+      },
+      config = function(_, opts) require'lsp_signature'.setup(opts) end
+    },
   {
     'VonHeikemen/lsp-zero.nvim',
     branch = 'v3.x',
@@ -45,6 +61,10 @@ return {
           end,
         },
       })
+    local capabilities = require('cmp_nvim_lsp').default_capabilities()
+    require('lspconfig')['pyright'].setup {
+        capabilities = capabilities
+    }
     end
   },
 
