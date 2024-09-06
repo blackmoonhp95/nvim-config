@@ -1,10 +1,10 @@
 return {
-  "EdenEast/nightfox.nvim",
-  options = {
-    styles = {
-      comments = "italic",
-      keywords = "bold",
-      types = "italic,bold",
-    }
-  }
+    "EdenEast/nightfox.nvim",
+    config = function ()
+        require('nightfox').setup({
+            options = {
+                transparent = true,
+            },
+        })
+    end
 }

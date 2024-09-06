@@ -10,3 +10,5 @@ vim.o.expandtab = true
 
 -- Set theme
 vim.cmd("colorscheme nightfox")
+
+vim.g.netrw_liststyle = 3
