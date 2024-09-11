@@ -12,3 +12,6 @@ vim.o.expandtab = true
 vim.cmd("colorscheme nightfox")
 
 vim.g.netrw_liststyle = 3
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
