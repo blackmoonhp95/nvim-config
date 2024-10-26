@@ -23,6 +23,9 @@ return {
         dependencies = {
             {'L3MON4D3/LuaSnip'},
             {'onsails/lspkind.nvim'},
+            { "hrsh7th/cmp-nvim-lsp" },
+            { "hrsh7th/cmp-vsnip" },
+            { "hrsh7th/vim-vsnip" }
         },
         config = function()
             -- Here is where you configure the autocompletion settings.
@@ -104,12 +107,13 @@ return {
                 }),
                 snippet = {
                     expand = function(args)
+                        vim.fn["vnsip#anonymous"](args.bodyd)
                         require('luasnip').lsp_expand(args.body)
                     end,
                 },
             })
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            require('lspconfig')['pyright'].setup {
+            require('lspconfig')['pylsp'].setup {
                 capabilities = capabilities
             }
         end
