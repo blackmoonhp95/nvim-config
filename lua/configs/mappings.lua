@@ -6,3 +6,4 @@ vim.keymap.set('n', '<leader>e', ':NvimTreeToggle<CR>', {
 
 vim.keymap.set('n', '<ESC>', '<Cmd>nohl<CR>')
 vim.keymap.set('n', 'J', '<Nop>', {noremap = true, silent = true})
+vim.keymap.set('v', 'J', '<Nop>', {noremap = true, silent = true})
