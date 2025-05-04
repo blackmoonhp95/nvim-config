@@ -59,9 +59,18 @@ return {
             }
             lsp_zero.extend_cmp()
 
-            -- And you can configure cmp even more, if you want to.
-            local cmp = require('cmp')
+			local cmp_autopairs = require('nvim-autopairs.completion.cmp')
+			local cmp = require('cmp')
+			cmp.event:on(
+				'confirm_done',
+				cmp_autopairs.on_confirm_done()
+			)
             cmp.setup({
+				snippet = {
+					expand = function(args)
+						vim.fn["vsnip#anonymous"](args.body)
+					end
+				},
                 preselect = 'item',
                 window = {
                     completion = cmp.config.window.bordered(),
@@ -88,17 +97,17 @@ return {
                         })[entry.source.name]
                         return vim_item
                     end
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ['<CR>'] = cmp.mapping.confirm({select = false}),
-                }),
-                snippet = {
-                    expand = function(args)
-                        vim.fn["vnsip#anonymous"](args.body)
-                        require('luasnip').lsp_expand(args.body)
-                    end,
-                },
-            })
+				},
+				mapping = cmp.mapping.preset.insert({
+					['<C-b>'] = cmp.mapping.scroll_docs(-4),
+					['<C-f>'] = cmp.mapping.scroll_docs(4),
+					['<C-Space>'] = cmp.mapping.complete(),
+					['<Tab>'] = cmp.mapping.select_next_item({behavior = cmp.SelectBehavior, count = 1}),
+					['<S-Tab>'] = cmp.mapping.select_prev_item({behavior = cmp.SelectBehavior, count = 1}),
+					['<C-e>'] = cmp.mapping.abort(),
+					['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+				}),
+			})
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
             require('lspconfig')['pylsp'].setup {
                 capabilities = capabilities
@@ -124,41 +133,6 @@ return {
                 lsp_zero.default_keymaps({buffer = bufnr})
             end)
 
-            require('mason-lspconfig').setup({
-                ensure_installed = {
-                    'pylsp',
-                    'lua_ls',
-                    'jsonls',
-                    'bashls'
-                },
-                handlers = {
-                    function(server_name)
-                        require('lspconfig')[server_name].setup({
-						})
-					end,
-
-                    lua_ls = function()
-                        local lua_opts = lsp_zero.nvim_lua_ls()
-                        require('lspconfig').lua_ls.setup(lua_opts)
-                    end,
-
-					pylsp = function()
-						require('lspconfig').pylsp.setup({
-							settings = {
-								pylsp = {
-									plugins = {
-										pycodestyle = {
-											enabled = true,
-											ignore = { 'E501', 'E231' },
-											maxLineLength = 88,
-										},
-									},
-								},
-							},
-						})
-					end
-				},
-            })
 			vim.api.nvim_exec_autocmds("FileType", {})
         end
     }
