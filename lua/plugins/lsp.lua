@@ -109,9 +109,10 @@ return {
 				}),
 			})
             local capabilities = require('cmp_nvim_lsp').default_capabilities()
-            require('lspconfig')['pylsp'].setup {
+            vim.lsp.config('pylsp', {
                 capabilities = capabilities
-            }
+            })
+			vim.lsp.enable('pylsp')
         end
     },
 
